@@ -131,6 +131,7 @@ export const HomeScreen: React.FC = () => {
           {item.category === 'study' ? 'Học tập' : item.category === 'drink' ? 'Nước' : 'Đồ ăn'}
         </Typography>
       </View>
+      {/* Nút ở danh sách chính luôn là "Đặt" để mở modal */}
       <ShopButton
         title="Đặt"
         onPress={() => handleOpenModal(item)}
@@ -324,10 +325,11 @@ export const HomeScreen: React.FC = () => {
                   </Pressable>
                 </View>
 
+                {/* Nút Xác nhận đặt bên trong Modal: Còn giờ thì cho đặt, hết giờ (isExpired) thì disable và đổi tên */}
                 <ShopButton
                   title={isExpired ? 'Hết giờ flash-sale' : 'Xác nhận đặt'}
                   onPress={handleConfirmOrder}
-                  isLoading={isExpired}
+                  disabled={isExpired}
                   style={{ marginTop: 15 }}
                 />
                 <ShopButton
