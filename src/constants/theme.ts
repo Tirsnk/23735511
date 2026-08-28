@@ -10,7 +10,7 @@ export const LIGHT_COLORS = {
   error: '#DC2626',
   success: '#16A34A',
 };
-
+  
 export const DARK_COLORS = {
   primary: '#0F766E',
   secondary: '#F59E0B',
