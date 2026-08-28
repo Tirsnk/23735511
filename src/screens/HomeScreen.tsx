@@ -98,11 +98,12 @@ export const HomeScreen: React.FC = () => {
         { id: 'study', label: 'Học tập' },
       ];
 
-  const handleOpenModal = useCallback((item: Product) => {
+const handleOpenModal = useCallback((item: Product) => {
+    if (isExpired) return; // Hết giờ thì chặn không cho mở modal dưới mọi hình thức!
     setSelectedProduct(item);
     dispatch({ type: 'RESET' });
     setModalVisible(true);
-  }, []);
+  }, [isExpired]);
 
   const handleConfirmOrder = () => {
     if (!selectedProduct) return;
@@ -114,10 +115,23 @@ export const HomeScreen: React.FC = () => {
     dispatch({ type: 'RESET' });
   };
 
-  const renderItem = useCallback(({ item }: { item: Product }) => (
+const renderItem = useCallback(({ item }: { item: Product }) => (
     <Pressable
-      style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
-      onPress={() => handleOpenModal(item)}
+      style={[
+        styles.card,
+        { 
+          backgroundColor: colors.surface, 
+          borderColor: colors.border,
+          opacity: isExpired ? 0.6 : 1 // Làm mờ nhẹ khi hết giờ nếu muốn
+        }
+      ]}
+      onPress={() => {
+        if (!isExpired) {
+          handleOpenModal(item);
+        } else {
+          Alert.alert("Flash-Sale", "Đã hết giờ flash-sale, không thể đặt món!");
+        }
+      }}
     >
       <Image source={{ uri: item.image }} style={styles.cardImage} resizeMode="cover" />
       <View style={styles.cardInfo}>
@@ -131,14 +145,15 @@ export const HomeScreen: React.FC = () => {
           {item.category === 'study' ? 'Học tập' : item.category === 'drink' ? 'Nước' : 'Đồ ăn'}
         </Typography>
       </View>
-      {/* Nút ở danh sách chính luôn là "Đặt" để mở modal */}
+      {/* Nút đặt ở danh sách: Hết giờ thì hiển thị 'Hết giờ' và khóa (disabled) */}
       <ShopButton
-        title="Đặt"
+        title={isExpired ? 'Hết giờ' : 'Đặt'}
         onPress={() => handleOpenModal(item)}
+        disabled={isExpired}
         style={styles.cardButton}
       />
     </Pressable>
-  ), [colors, handleOpenModal]);
+  ), [colors, handleOpenModal, isExpired]);
 
   return (
     <View
