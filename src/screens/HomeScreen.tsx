@@ -191,7 +191,7 @@ const renderItem = useCallback(({ item }: { item: Product }) => (
             style={[styles.themeBtn, { borderColor: colors.primary }]}
           >
             <Typography variant="medium" color={colors.primary}>
-              {isDark ? 'Sáng/Tối' : 'Sáng/Tối'}
+              {isDark ? 'Sáng' : 'Tối'}
             </Typography>
           </Pressable>
           <Typography variant="bold" color={colors.secondary}>
